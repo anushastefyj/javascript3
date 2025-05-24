@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vue.js OMDB Movie Search</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1470&q=80') no-repeat center center fixed;
+      background-size: cover;
+      margin: 0;
+      padding: 20px;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    #app {
+      background: rgba(0, 0, 0, 0.75);
+      padding: 25px;
+      border-radius: 16px;
+      width: 420px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+      border: 3px solid #5a67d8;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+    }
+    input[type="text"] {
+      width: calc(100% - 24px);
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      margin-bottom: 12px;
+      outline: none;
+      transition: box-shadow 0.3s ease;
+    }
+    input[type="text"]:focus {
+      box-shadow: 0 0 8px #5a67d8;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #5a67d8;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    button:hover {
+      background-color: #434190;
+      transform: scale(1.05);
+    }
+    .movie {
+      margin-top: 20px;
+      background: #2d3748;
+      border-radius: 10px;
+      padding: 15px;
+      display: flex;
+      gap: 15px;
+      align-items: center;
+      opacity: 0;
+      animation: fadeIn 0.5s forwards;
+      border: 2px solid #5a67d8;
+    }
+    .movie img {
+      width: 80px;
+      border-radius: 6px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+      transition: transform 0.3s ease;
+    }
+    .movie img:hover {
+      transform: scale(1.1);
+    }
+    .movie-details {
+      flex: 1;
+    }
+    .movie-details h2 {
+      margin: 0 0 8px 0;
+      font-size: 20px;
+    }
+    .movie-details p {
+      margin: 4px 0;
+      font-size: 14px;
+      color: #cbd5e0;
+    }
+    .error {
+      margin-top: 15px;
+      color: #f56565;
+      text-align: center;
+      font-weight: 600;
+      animation: fadeIn 0.5s forwards;
+    }
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <h1>OMDB Movie Search</h1>
+    <input type="text" v-model="query" placeholder="Enter movie title" @keyup.enter="searchMovies" />
+    <button @click="searchMovies">Search</button>
+    <div v-if="error" class="error">{{ error }}</div>
+    <div v-if="movies.length">
+      <div v-for="movie in movies" :key="movie.imdbID" class="movie">
+        <img :src="movie.Poster !== 'N/A' ? movie.Poster : 'https://via.placeholder.com/80x120?text=No+Image'" alt="Poster" />
+        <div class="movie-details">
+          <h2>{{ movie.Title }} ({{ movie.Year }})</h2>
+          <p>Type: {{ movie.Type }}</p>
+          <p>IMDB ID: {{ movie.imdbID }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer style="text-align:center; margin-top: 20px; color: #cbd5e0; font-size: 14px;">
+    <p>Vue.js OMDB Movie Search App &copy; 2024</p>
+  </footer>
+
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <script>
+    const { createApp } = Vue;
+
+    createApp({
+      data() {
+        return {
+          query: '',
+          movies: [],
+          error: ''
+        };
+      },
+      methods: {
+        async searchMovies() {
+          this.error = '';
+          this.movies = [];
+          if (!this.query) {
+            this.error = 'Please enter a movie title.';
+            return;
+          }
+          const apiKey = "3f434751"; // Replace with your OMDB API key
+          const url = `https://www.omdbapi.com/?apikey=${apiKey}&s=${encodeURIComponent(this.query)}`;
+          try {
+            const response = await fetch(url);
+            const data = await response.json();
+            if (data.Response === 'False') {
+              this.error = data.Error || 'No movies found.';
+            } else {
+              this.movies = data.Search;
+            }
+          } catch (err) {
+            this.error = 'Error fetching data from OMDB API.';
+          }
+        },
+        clearSearch() {
+          this.query = '';
+          this.movies = [];
+          this.error = '';
+        }
+      }
+    }).mount('#app');
+  </script>
+</body>
+</html>
