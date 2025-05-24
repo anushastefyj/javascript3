@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Men's Fashion - Flipkart Style with Brand Navbar and Product Slider</title>
+  <style>
+    /* Reset */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f1f3f6;
+      color: #212121;
+      line-height: 1.5;
+    }
+    /* Header */
+    header {
+      background-color: #2874f0;
+      color: white;
+      padding: 10px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .logo {
+      font-weight: 700;
+      font-size: 1.8rem;
+      letter-spacing: 1.5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .logo span {
+      color: #ffcc00;
+    }
+    .search-bar {
+      flex-grow: 1;
+      margin: 0 20px;
+      position: relative;
+    }
+    .search-bar input {
+      width: 100%;
+      padding: 8px 12px;
+      border-radius: 2px 0 0 2px;
+      border: none;
+      font-size: 1rem;
+      outline: none;
+    }
+    .search-bar button {
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      background-color: #ffe500;
+      border: none;
+      padding: 0 15px;
+      border-radius: 0 2px 2px 0;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 1rem;
+      color: #212121;
+      transition: background-color 0.3s ease;
+    }
+    .search-bar button:hover {
+      background-color: #ffcc00;
+    }
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 25px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      position: relative;
+    }
+    .header-right div:hover {
+      text-decoration: underline;
+    }
+    .cart {
+      position: relative;
+      cursor: pointer;
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .cart-icon {
+      width: 24px;
+      height: 24px;
+      fill: white;
+    }
+    .cart-count {
+      position: absolute;
+      top: -8px;
+      right: -10px;
+      background-color: #ff6161;
+      color: white;
+      font-weight: 700;
+      font-size: 0.8rem;
+      padding: 2px 6px;
+      border-radius: 50%;
+      box-shadow: 0 0 4px rgba(0,0,0,0.2);
+    }
+    /* Navigation */
+    nav {
+      background-color: white;
+      max-width: 1200px;
+      margin: 0 auto 30px auto;
+      padding: 10px 40px;
+      display: flex;
+      gap: 30px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 1rem;
+      color: #2874f0;
+      user-select: none;
+    }
+    nav > div {
+      cursor: pointer;
+      position: relative;
+    }
+    nav > div:hover {
+      text-decoration: underline;
+    }
+    /* Brand navbar */
+    #brandNavbar {
+      max-width: 1200px;
+      margin: 0 auto 30px auto;
+      padding: 10px 40px;
+      background-color: white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      border-radius: 6px;
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: #2874f0;
+      user-select: none;
+    }
+    #brandNavbar div {
+      cursor: pointer;
+      padding: 5px 10px;
+      border-radius: 4px;
+      transition: background-color 0.3s ease;
+    }
+    #brandNavbar div.active, #brandNavbar div:hover {
+      background-color: #2874f0;
+      color: white;
+    }
+    /* Main container */
+    main {
+      max-width: 1200px;
+      margin: 0 auto 60px auto;
+      padding: 0 20px;
+    }
+    /* Product grid */
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 25px;
+    }
+    .card {
+      background: white;
+      border-radius: 6px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      transition: box-shadow 0.3s ease;
+    }
+    .card:hover {
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+    .card img {
+      width: 100%;
+      height: 260px;
+      object-fit: cover;
+      border-top-left-radius: 6px;
+      border-top-right-radius: 6px;
+      transition: transform 0.3s ease;
+    }
+    .card:hover img {
+      transform: scale(1.05);
+    }
+    .card-content {
+      padding: 15px 20px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .card-content h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #212121;
+    }
+    .card-content p {
+      font-size: 1rem;
+      color: #757575;
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+    .card-content button {
+      background-color: #fb641b;
+      color: white;
+      border: none;
+      padding: 12px 0;
+      border-radius: 4px;
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      width: 100%;
+    }
+    .card-content button:hover {
+      background-color: #e55300;
+    }
+    /* Cart view */
+    #cartView {
+      display: none;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      padding: 30px 40px;
+      max-width: 800px;
+      margin: 0 auto 60px auto;
+    }
+    #cartView h2 {
+      font-weight: 700;
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      text-align: center;
+      color: #212121;
+      letter-spacing: 1px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    #backToProducts {
+      font-size: 1rem;
+      color: #2874f0;
+      cursor: pointer;
+      font-weight: 600;
+      border: none;
+      background: none;
+      padding: 0;
+      text-decoration: underline;
+    }
+    #cartItems {
+      margin-bottom: 30px;
+    }
+    .cart-item {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      border-bottom: 1px solid #ddd;
+      padding: 15px 0;
+    }
+    .cart-item img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+    .cart-item-details {
+      flex-grow: 1;
+    }
+    .cart-item-details h4 {
+      margin-bottom: 6px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: #212121;
+    }
+    .cart-item-details p {
+      margin-bottom: 4px;
+      color: #555;
+      font-weight: 600;
+    }
+    .cart-item-details .price {
+      font-weight: 700;
+      color: #212121;
+    }
+    .remove-btn {
+      background-color: #ff6161;
+      border: none;
+      color: white;
+      padding: 8px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: background-color 0.3s ease;
+    }
+    .remove-btn:hover {
+      background-color: #e55353;
+    }
+    /* Payment section inside cart */
+    #cartPaymentSection {
+      margin-top: 20px;
+    }
+    #cartPaymentSection h3 {
+      font-weight: 700;
+      font-size: 1.4rem;
+      margin-bottom: 20px;
+      color: #212121;
+    }
+    .bank-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    .bank-button {
+      flex: 1 1 30%;
+      padding: 12px 10px;
+      border: 2px solid #ddd;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 1rem;
+      color: #555;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      user-select: none;
+      background-color: #fafafa;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+      text-align: center;
+    }
+    .bank-button.selected {
+      border-color: #2874f0;
+      color: #2874f0;
+      box-shadow: 0 4px 12px rgba(40,116,240,0.3);
+      background-color: #fff;
+    }
+    #paymentChoice {
+      margin-top: 20px;
+      display: none;
+      text-align: center;
+    }
+    #paymentChoice button {
+      margin: 0 10px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      font-weight: 600;
+      border: 2px solid #2874f0;
+      border-radius: 6px;
+      background-color: white;
+      color: #2874f0;
+      cursor: pointer;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    #paymentChoice button:hover {
+      background-color: #2874f0;
+      color: white;
+    }
+    #upiSection, #qrCodeSection {
+      margin-top: 20px;
+      display: none;
+      text-align: center;
+    }
+    #upiInput {
+      padding: 10px;
+      font-size: 1rem;
+      width: 200px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      outline: none;
+    }
+    #payButton {
+      margin-top: 15px;
+      padding: 12px 30px;
+      background-color: #2874f0;
+      color: white;
+      border: none;
+      font-weight: 700;
+      font-size: 1.1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      letter-spacing: 1.5px;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 6px 15px rgba(40,116,240,0.4);
+    }
+    #payButton:hover {
+      background-color: #1a4db7;
+      box-shadow: 0 8px 20px rgba(26,77,183,0.6);
+    }
+    #cartQrCode {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+    }
+    /* Brand navbar */
+    #brandNavbar {
+      max-width: 1200px;
+      margin: 0 auto 30px auto;
+      padding: 10px 40px;
+      background-color: white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      border-radius: 6px;
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: #2874f0;
+      user-select: none;
+    }
+    #brandNavbar div {
+      cursor: pointer;
+      padding: 5px 10px;
+      border-radius: 4px;
+      transition: background-color 0.3s ease;
+    }
+    #brandNavbar div.active, #brandNavbar div:hover {
+      background-color: #2874f0;
+      color: white;
+    }
+    /* Product slider */
+    #productSlider {
+      max-width: 1200px;
+      margin: 0 auto 40px auto;
+      padding: 0 20px;
+      background-color: white;
+      border-radius: 6px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      overflow: hidden;
+      position: relative;
+    }
+    #sliderProducts {
+      display: flex;
+      transition: transform 0.5s ease;
+    }
+    .slider-card {
+      min-width: 220px;
+      margin-right: 20px;
+      background: white;
+      border-radius: 6px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      transition: box-shadow 0.3s ease;
+    }
+    .slider-card:hover {
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+    .slider-card img {
+      width: 100%;
+      height: 260px;
+      object-fit: cover;
+      border-top-left-radius: 6px;
+      border-top-right-radius: 6px;
+      transition: transform 0.3s ease;
+    }
+    .slider-card:hover img {
+      transform: scale(1.05);
+    }
+    .slider-card-content {
+      padding: 15px 20px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .slider-card-content h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #212121;
+    }
+    .slider-card-content p {
+      font-size: 1rem;
+      color: #757575;
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+    /* Responsive */
+    @media (max-width: 600px) {
+      body {
+        padding: 15px 20px;
+      }
+      header {
+        padding: 15px 20px;
+      }
+      main {
+        margin: 20px auto 40px auto;
+        padding: 0 10px;
+      }
+      nav {
+        padding: 10px 20px;
+        gap: 15px;
+        font-size: 1rem;
+      }
+      #brandNavbar {
+        padding: 10px 20px;
+        gap: 20px;
+        font-size: 1rem;
+      }
+      .payment-options {
+        flex-direction: column;
+      }
+      .payment-options label {
+        margin-bottom: 15px;
+      }
+      #cartView {
+        padding: 20px 25px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">Men's <span>Fashion</span></div>
+    <div class="search-bar">
+      <input type="text" placeholder="Search for Products, Brands and More" />
+      <button>Search</button>
+    </div>
+    <div class="header-right">
+      <div>Login</div>
+      <div class="cart" title="Cart" id="cartIcon">
+        <svg class="cart-icon" viewBox="0 0 24 24">
+          <path d="M7 18c-1.104 0-2 .896-2 2s.896 2 2 2 2-.896 2-2-.896-2-2-2zm10 0c-1.104 0-2 .896-2 2s.896 2 2 2 2-.896 2-2-.896-2-2-2zm-12.83-2.25l1.72-7.5h11.22l1.72 7.5H4.17zM20 6H6.21l-.94-3H2v2h2l3.6 7.59-1.35 2.44C5.16 15.37 5 15.68 5 16c0 1.104.896 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 14h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49-1.74-1z"/>
+        </svg>
+        <div class="cart-count" id="cartCount">0</div>
+      </div>
+    </div>
+  </header>
+
+  <nav>
+    <div>Men's Fashion</div>
+  </nav>
+
+  <div id="brandNavbar">
+    <div class="brand-item active" data-brand="brand1">Brand 1</div>
+    <div class="brand-item" data-brand="brand2">Brand 2</div>
+    <div class="brand-item" data-brand="brand3">Brand 3</div>
+    <div class="brand-item" data-brand="brand4">Brand 4</div>
+  </div>
+
+  <main>
+    <div id="productSlider">
+      <div id="sliderProducts"></div>
+    </div>
+
+    <div class="products" id="products"></div>
+
+    <div id="cartView" style="display:none;">
+      <h2>Your Cart <button id="backToProducts">Back to Products</button></h2>
+      <div id="cartItems"></div>
+      <div id="cartPaymentSection">
+        <h3>Make a Payment</h3>
+        <div class="bank-buttons" id="bankButtons"></div>
+        <div id="paymentChoice">
+          <p>Select Payment Method for <span id="selectedBankName"></span>:</p>
+          <button id="chooseUPI">UPI</button>
+          <button id="chooseQR">QR Code</button>
+        </div>
+        <div id="upiSection">
+          <label for="upiInput">Enter UPI PIN:</label><br />
+          <input type="password" id="upiInput" maxlength="6" placeholder="Enter 6-digit UPI PIN" />
+          <br />
+          <button id="payButton">Pay</button>
+        </div>
+        <div id="qrCodeSection">
+          <div id="cartQrCode"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+  <script>
+    const products = [
+      { id: 1, name: "Classic T-Shirt", price: 19.99, image: "https://via.placeholder.com/280x280?text=T-Shirt", discount: 0, brand: "brand1" },
+      { id: 2, name: "Blue Jeans", price: 49.99, image: "https://via.placeholder.com/280x280?text=Jeans", discount: 10, brand: "brand2" },
+      { id: 3, name: "Sneakers", price: 69.99, image: "https://via.placeholder.com/280x280?text=Sneakers", discount: 0, brand: "brand3" },
+      { id: 4, name: "Leather Jacket", price: 129.99, image: "https://via.placeholder.com/280x280?text=Jacket", discount: 15, brand: "brand4" },
+      { id: 5, name: "Baseball Cap", price: 14.99, image: "https://via.placeholder.com/280x280?text=Cap", discount: 0, brand: "brand1" },
+      { id: 6, name: "Summer Dress", price: 59.99, image: "https://via.placeholder.com/280x280?text=Dress", discount: 5, brand: "brand2" },
+      { id: 7, name: "Formal Shirt", price: 39.99, image: "https://via.placeholder.com/280x280?text=Shirt", discount: 0, brand: "brand3" },
+      { id: 8, name: "Running Shoes", price: 89.99, image: "https://via.placeholder.com/280x280?text=Running+Shoes", discount: 0, brand: "brand4" },
+      { id: 9, name: "Wool Scarf", price: 24.99, image: "https://via.placeholder.com/280x280?text=Scarf", discount: 20, brand: "brand1" },
+      { id: 10, name: "Sunglasses", price: 29.99, image: "https://via.placeholder.com/280x280?text=Sunglasses", discount: 10, brand: "brand2" }
+    ];
+
+    const banks = [
+      { id: 'icici', name: 'ICICI Bank', qrData: 'upi://pay?pa=icici@upi&pn=ICICI+Bank' },
+      { id: 'sbi', name: 'SBI Bank', qrData: 'upi://pay?pa=sbi@upi&pn=SBI+Bank' },
+      { id: 'andhra', name: 'Andhra Bank', qrData: 'upi://pay?pa=andhra@upi&pn=Andhra+Bank' }
+    ];
+
+    const productsContainer = document.getElementById('products');
+    const sliderProductsContainer = document.getElementById('sliderProducts');
+    const brandNavbar = document.getElementById('brandNavbar');
+    const brandItems = brandNavbar.querySelectorAll('.brand-item');
+    const cartCount = document.getElementById('cartCount');
+    const cartIcon = document.getElementById('cartIcon');
+    const cartView = document.getElementById('cartView');
+    const cartItemsContainer = document.getElementById('cartItems');
+    const bankButtonsContainer = document.getElementById('bankButtons');
+    const paymentChoice = document.getElementById('paymentChoice');
+    const selectedBankNameSpan = document.getElementById('selectedBankName');
+    const chooseUPIButton = document.getElementById('chooseUPI');
+    const chooseQRButton = document.getElementById('chooseQR');
+    const upiSection = document.getElementById('upiSection');
+    const qrCodeSection = document.getElementById('qrCodeSection');
+    const upiInput = document.getElementById('upiInput');
+    const payButton = document.getElementById('payButton');
+    const cartQrCodeContainer = document.getElementById('cartQrCode');
+    const backToProductsBtn = document.getElementById('backToProducts');
+
+    let cart = [];
+    let selectedBank = null;
+    let selectedPaymentMethod = null;
+    let currentBrand = 'brand1';
+    let sliderIndex = 0;
+    let sliderInterval;
+
+    function updateCartCount() {
+      cartCount.textContent = cart.length;
+    }
+
+    function renderProducts() {
+      productsContainer.innerHTML = '';
+      const filteredProducts = products.filter(p => p.brand === currentBrand);
+      filteredProducts.forEach(product => {
+        const discountedPrice = product.discount > 0 ? (product.price * (1 - product.discount / 100)).toFixed(2) : null;
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <img src="${product.image}" alt="${product.name}" />
+          <div class="card-content">
+            <h3>${product.name}</h3>
+            <p>
+              <span class="price">$${product.price.toFixed(2)}</span>
+              ${discountedPrice ? <span class="discounted-price">$${discountedPrice}</span> : ''}
+            </p>
+            <button data-id="${product.id}">Add to Cart</button>
+          </div>
+        `;
+        productsContainer.appendChild(card);
+      });
+    }
+
+    function renderSliderProducts() {
+      sliderProductsContainer.innerHTML = '';
+      const brandProducts = products.filter(p => p.brand === currentBrand);
+      if (brandProducts.length === 0) return;
+      // Show 3 products at a time, cycling every 3 seconds
+      for (let i = 0; i < 3; i++) {
+        const product = brandProducts[(sliderIndex + i) % brandProducts.length];
+        const card = document.createElement('div');
+        card.className = 'slider-card';
+        card.innerHTML = `
+          <img src="${product.image}" alt="${product.name}" />
+          <div class="slider-card-content">
+            <h3>${product.name}</h3>
+            <p>$${product.price.toFixed(2)}</p>
+          </div>
+        `;
+        sliderProductsContainer.appendChild(card);
+      }
+    }
+
+    function startSlider() {
+      renderSliderProducts();
+      sliderInterval = setInterval(() => {
+        sliderIndex = (sliderIndex + 1) % products.filter(p => p.brand === currentBrand).length;
+        renderSliderProducts();
+      }, 3000);
+    }
+
+    function stopSlider() {
+      clearInterval(sliderInterval);
+    }
+
+    brandItems.forEach(item => {
+      item.addEventListener('click', () => {
+        brandItems.forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+        currentBrand = item.dataset.brand;
+        sliderIndex = 0;
+        renderProducts();
+        stopSlider();
+        startSlider();
+      });
+    });
+
+    function renderCart() {
+      cartItemsContainer.innerHTML = '';
+      if (cart.length === 0) {
+        cartItemsContainer.innerHTML = '<p>Your cart is empty.</p>';
+        clearPaymentUI();
+        return;
+      }
+      cart.forEach((item, index) => {
+        const discountedPrice = item.discount > 0 ? (item.price * (1 - item.discount / 100)).toFixed(2) : null;
+        const cartItem = document.createElement('div');
+        cartItem.className = 'cart-item';
+        cartItem.innerHTML = `
+          <img src="${item.image}" alt="${item.name}" />
+          <div class="cart-item-details">
+            <h4>${item.name}</h4>
+            <p>
+              <span class="price">$${item.price.toFixed(2)}</span>
+              ${discountedPrice ? <span class="discounted-price">$${discountedPrice}</span> : ''}
+            </p>
+          </div>
+          <button class="remove-btn" data-index="${index}">Remove</button>
+        `;
+        cartItemsContainer.appendChild(cartItem);
+      });
+    }
+
+    function clearPaymentUI() {
+      paymentChoice.style.display = 'none';
+      upiSection.style.display = 'none';
+      qrCodeSection.style.display = 'none';
+      cartQrCodeContainer.innerHTML = '';
+      upiInput.value = '';
+      selectedBank = null;
+      selectedPaymentMethod = null;
+      Array.from(bankButtonsContainer.children).forEach(btn => btn.classList.remove('selected'));
+    }
+
+    function renderBankButtons() {
+      bankButtonsContainer.innerHTML = '';
+      banks.forEach(bank => {
+        const btn = document.createElement('div');
+        btn.className = 'bank-button';
+        btn.textContent = bank.name;
+        btn.dataset.bankId = bank.id;
+        bankButtonsContainer.appendChild(btn);
+      });
+    }
+
+    bankButtonsContainer.addEventListener('click', e => {
+      if (e.target.classList.contains('bank-button')) {
+        clearPaymentUI();
+        selectedBank = banks.find(b => b.id === e.target.dataset.bankId);
+        if (!selectedBank) return;
+        e.target.classList.add('selected');
+        selectedBankNameSpan.textContent = selectedBank.name;
+        paymentChoice.style.display = 'block';
+      }
+    });
+
+    chooseUPIButton.addEventListener('click', () => {
+      selectedPaymentMethod = 'upi';
+      paymentChoice.style.display = 'none';
+      upiSection.style.display = 'block';
+      qrCodeSection.style.display = 'none';
+      cartQrCodeContainer.innerHTML = '';
+    });
+
+    chooseQRButton.addEventListener('click', () => {
+      selectedPaymentMethod = 'qr';
+      paymentChoice.style.display = 'none';
+      upiSection.style.display = 'none';
+      qrCodeSection.style.display = 'flex';
+      cartQrCodeContainer.innerHTML = '';
+      if (selectedBank && selectedBank.qrData) {
+        QRCode.toCanvas(selectedBank.qrData, { errorCorrectionLevel: 'H', scale: 8 }, function (error, canvas) {
+          if (error) {
+            console.error(error);
+            alert('Failed to generate QR code.');
+            return;
+          }
+          cartQrCodeContainer.appendChild(canvas);
+        });
+      }
+    });
+
+    payButton.addEventListener('click', () => {
+      if (!selectedBank) {
+        alert('Please select a bank.');
+        return;
+      }
+      if (selectedPaymentMethod === 'upi') {
+        const pin = upiInput.value.trim();
+        if (pin.length !== 6 || !/^\d{6}$/.test(pin)) {
+          alert('Please enter a valid 6-digit UPI PIN.');
+          return;
+        }
+        alert(Payment successful with UPI PIN: ${pin} via ${selectedBank.name});
+      } else if (selectedPaymentMethod === 'qr') {
+        alert(Please scan the QR code to complete payment via ${selectedBank.name});
+      } else {
+        alert('Please select a payment method.');
+      }
+    });
+
+    cartIcon.addEventListener('click', () => {
+      renderCart();
+      renderBankButtons();
+      clearPaymentUI();
+      cartView.style.display = 'block';
+      productsContainer.style.display = 'none';
+      stopSlider();
+    });
+
+    backToProductsBtn.addEventListener('click', () => {
+      cartView.style.display = 'none';
+      productsContainer.style.display = 'grid';
+      startSlider();
+    });
+
+    productsContainer.addEventListener('click', e => {
+      if (e.target.tagName === 'BUTTON') {
+        const id = parseInt(e.target.getAttribute('data-id'));
+        const product = products.find(p => p.id === id);
+        if (product) {
+          cart.push(product);
+          updateCartCount();
+          alert(${product.name} added to cart.);
+        }
+      }
+    });
+
+    cartItemsContainer.addEventListener('click', e => {
+      if (e.target.classList.contains('remove-btn')) {
+        const index = parseInt(e.target.getAttribute('data-index'));
+        if (!isNaN(index)) {
+          cart.splice(index, 1);
+          updateCartCount();
+          renderCart();
+          clearPaymentUI();
+        }
+      }
+    });
+
+    brandItems.forEach(item => {
+      item.addEventListener('click', () => {
+        brandItems.forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+        currentBrand = item.dataset.brand;
+        sliderIndex = 0;
+        renderProducts();
+        stopSlider();
+        startSlider();
+      });
+    });
+
+    // Initial render
+    renderProducts();
+    updateCartCount();
+    renderBankButtons();
+    startSlider();
+  </script>
+</body>
+</html>
